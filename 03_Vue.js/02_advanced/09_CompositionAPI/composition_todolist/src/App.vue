@@ -3,6 +3,19 @@
     <div class="card card-body bg-light">
       <div class="title">🕒 TodolistApp 💻</div>
     </div>
+
+    <div class="mt-2">
+      <div
+        v-if="notCompletedCount === 0"
+        class="alert alert-success text-center"
+      >
+        <strong>고생했어요</strong> 모든 할 일을 끝냈어요
+      </div>
+      <div v-else class="alert alert-info text-center">
+        오늘 할 일이 <strong>{{ notCompletedCount }}개</strong> 남았어요
+        힘내세요!
+      </div>
+    </div>
     <div class="card card-body">
       <div class="row text-center">
         <div class="col">전체 todo 개수: {{ totalCount }}</div>
@@ -16,6 +29,16 @@
         </div>
       </div>
     </div>
+    <div class="text-end mb-2">
+      <button
+        class="btn btn-danger btn-sm"
+        @click="clearAll"
+        v-confirm="'정말 모두 삭제할까요?'"
+      >
+        모든 할 일 삭제
+      </button>
+    </div>
+
     <div class="card card-default card-borderless">
       <div class="card-body">
         <InputTodo @add-todo="addTodo" />
@@ -75,6 +98,11 @@ export default {
         });
       }
     };
+    const clearAll = () => {
+      if (confirm('정말 모든 할 일을 삭제하시겠습니까?')) {
+        todoList.value = []; // 배열을 빈 통으로 만들면 끝!
+      }
+    };
 
     return {
       todoList,
@@ -84,6 +112,7 @@ export default {
       toggleCompleted,
       deleteTodo,
       addTodo,
+      clearAll,
     };
   },
 };
